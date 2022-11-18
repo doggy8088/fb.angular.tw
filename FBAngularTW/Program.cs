@@ -12,6 +12,10 @@ app.Run(ctx =>
         case "yt.angular.tw":
             ctx.Response.Redirect("https://www.youtube.com/c/AngularUserGroupTaiwan/videos");
             break;
+            
+        case "ts.angular.tw":
+            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial ");
+            break;
 
         default:
             ctx.Response.Redirect("https://www.facebook.com/groups/augularjs.tw");
