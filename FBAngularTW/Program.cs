@@ -14,7 +14,11 @@ app.Run(ctx =>
             break;
             
         case "ts.angular.tw":
-            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial ");
+            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial");
+            break;
+
+        case "vscode.angular.tw":
+            ctx.Response.Redirect("https://marketplace.visualstudio.com/items?itemName=doggy8088.angular-extension-pack");
             break;
 
         default:
