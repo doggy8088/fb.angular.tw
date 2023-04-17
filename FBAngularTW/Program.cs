@@ -34,7 +34,7 @@ app.Run(ctx =>
             break;
 
         default:
-            ctx.Response.Redirect("https://www.facebook.com/groups/augularjs.tw");
+            ctx.Response.Redirect("https://www.facebook.com/will.fans");
             break;
     }
     return Task.CompletedTask;
