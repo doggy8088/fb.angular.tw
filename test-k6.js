@@ -1,16 +1,18 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, sleep } from 'k6';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 
 function check_http_302_redirection(url, status, expected_location) {
     const res = http.get(url, { redirects: 0 });
     check(res, { [`${url} status should be ${status}`]: (r) => r.status == status });
     check(res, { [`${url} Location header should be ${expected_location}`]: (r) => r.headers['Location'] == expected_location });
+    sleep(1);
 }
 
 function check_http_200_ok(url) {
     const res = http.get(url, { redirects: 0 });
     check(res, { [`${url} status should be 200`]: (r) => r.status == 200 });
+    sleep(1);
 }
 
 export default function () {
