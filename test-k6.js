@@ -40,4 +40,7 @@ export function handleSummary(data) {
 
 export const options = {
     vus: 1,
+    thresholds: {
+        checks: ['rate>=1'],
+    },
 }
