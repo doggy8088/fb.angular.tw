@@ -18,7 +18,11 @@ app.Run(ctx =>
     {
         ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
     }
-    ctx.Response.Redirect(redirectUrl);
+    else
+    {
+        ctx.Response.Redirect(redirectUrl);
+    }
+
 
     return Task.CompletedTask;
 });
