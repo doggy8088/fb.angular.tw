@@ -9,7 +9,7 @@ app.Run(ctx =>
 {
     ctx.Response.Redirect(
         ctx.RequestServices
-            .GetRequiredService<IOptionsSnapshot<RedirectUrlOptions>>()
+            .GetRequiredService<IOptionsSnapshot<ShortUrlOptions>>()
             .Get(ctx.Request.Host.Host)
         .RedirectUrl);
 
