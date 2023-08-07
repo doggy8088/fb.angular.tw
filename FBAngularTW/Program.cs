@@ -1,43 +1,33 @@
+using FBAngularTW;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
 var app = builder.Build();
 
 app.Run(ctx =>
 {
-    switch (ctx.Request.Host.Host)
-    {
-        case "fb.angular.tw":
-            ctx.Response.Redirect("https://www.facebook.com/groups/augularjs.tw");
-            break;
+	var defaultTargetUrl = app.Configuration.GetValue<string>("DefaultTargetUrl");
 
-        case "yt.angular.tw":
-            ctx.Response.Redirect("https://www.youtube.com/c/AngularUserGroupTaiwan/videos");
-            break;
-            
-        case "ts.angular.tw":
-            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial");
-            break;
+	var mappings = app.Configuration.GetSection("ShortUrlMappings").Get<ShortUrlMapping[]>();
+	if (mappings == null)
+	{
+		ctx.Response.Redirect(defaultTargetUrl);
+		return Task.CompletedTask;
+	}
 
-        case "vscode.angular.tw":
-            ctx.Response.Redirect("https://marketplace.visualstudio.com/items?itemName=doggy8088.angular-extension-pack");
-            break;
+	var mapping = mappings.FirstOrDefault(x => string.Compare(x.ShortUrl, ctx.Request.Host.Host) == 0);
+	if (mapping == null)
+	{
+		ctx.Response.Redirect(defaultTargetUrl);
+	}
+	else
+	{
+		ctx.Response.Redirect(mapping.TargetUrl);
+	}
 
-        case "cli.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/v4_YsDZbs3g");
-            break;
-
-        case "rx6.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/BA1vSZwzkK8");
-            break;
-
-        case "install.angular.tw":
-            ctx.Response.Redirect("https://gist.github.com/doggy8088/15e434b43992cf25a78700438743774a");
-            break;
-
-        default:
-            ctx.Response.Redirect("https://www.facebook.com/will.fans");
-            break;
-    }
-    return Task.CompletedTask;
+	return Task.CompletedTask;
 });
 
 app.Run();
