@@ -11,13 +11,13 @@ app.Run(ctx =>
 	var defaultTargetUrl = app.Configuration.GetValue<string>("DefaultTargetUrl");
 
 	var mappings = app.Configuration.GetSection("ShortUrlMappings").Get<ShortUrlMapping[]>();
-	if (mappings == null)
+	if (mappings == null || !mappings.Any())
 	{
 		ctx.Response.Redirect(defaultTargetUrl);
 		return Task.CompletedTask;
 	}
 
-	var mapping = mappings.FirstOrDefault(x => string.Compare(x.ShortUrl, ctx.Request.Host.Host) == 0);
+	var mapping = mappings.FirstOrDefault(x => string.Compare(x.ShortUrl, ctx.Request.Host.Host, true) == 0);
 	if (mapping == null)
 	{
 		ctx.Response.Redirect(defaultTargetUrl);
