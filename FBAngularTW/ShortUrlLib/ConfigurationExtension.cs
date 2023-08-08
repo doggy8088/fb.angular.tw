@@ -8,8 +8,8 @@ namespace FBAngularTW.ShortUrlLib
         public static WebApplicationBuilder AddShortUrl(this WebApplicationBuilder builder)
         {
             builder.Services.Configure<ShortUrlSetting>(builder.Configuration.GetSection(nameof(ShortUrlSetting)));
-            builder.Services.AddScoped<ShortUrlService>();
-            builder.Services.AddScoped<UseShortUrlMiddleware>();
+            builder.Services.AddSingleton<ShortUrlService>();
+            builder.Services.AddSingleton<UseShortUrlMiddleware>();
 
             return builder;
         }
