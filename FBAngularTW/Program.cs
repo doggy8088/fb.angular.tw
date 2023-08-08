@@ -1,42 +1,33 @@
+using FBAngularTW;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddOptions<RedirectInfos>()
+    .Bind(builder.Configuration.GetSection(nameof(RedirectInfos)))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 var app = builder.Build();
 
 app.Run(ctx =>
 {
-    switch (ctx.Request.Host.Host)
+    var host = ctx.Request.Host.Host;
+
+    var redirectInofs = ctx.RequestServices
+    .GetRequiredService<IOptionsSnapshot<RedirectInfos>>().Value;
+
+    var redirectUrl = redirectInofs.RedirectList?
+    .FirstOrDefault(x => x.Host == host)?.Url;
+
+    if (string.IsNullOrEmpty(redirectUrl))
     {
-        case "fb.angular.tw":
-            ctx.Response.Redirect("https://www.facebook.com/groups/augularjs.tw");
-            break;
-
-        case "yt.angular.tw":
-            ctx.Response.Redirect("https://www.youtube.com/c/AngularUserGroupTaiwan/videos");
-            break;
-            
-        case "ts.angular.tw":
-            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial");
-            break;
-
-        case "vscode.angular.tw":
-            ctx.Response.Redirect("https://marketplace.visualstudio.com/items?itemName=doggy8088.angular-extension-pack");
-            break;
-
-        case "cli.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/v4_YsDZbs3g");
-            break;
-
-        case "rx6.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/BA1vSZwzkK8");
-            break;
-
-        case "install.angular.tw":
-            ctx.Response.Redirect("https://gist.github.com/doggy8088/15e434b43992cf25a78700438743774a");
-            break;
-
-        default:
-            ctx.Response.Redirect("https://www.facebook.com/will.fans");
-            break;
+        redirectUrl = redirectInofs.DefaultUrl;
     }
+
+    ctx.Response.Redirect(redirectUrl);
+
     return Task.CompletedTask;
 });
 
