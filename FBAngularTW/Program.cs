@@ -1,5 +1,4 @@
 using FBAngularTW;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +9,9 @@ var app = builder.Build();
 
 app.Run(ctx =>
 {
-    var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
-    using var serviceScope = serviceScopeFactory.CreateScope();
-    IOptionsSnapshot<DomainUrlConfig> domainUrlConfigOption = serviceScope.ServiceProvider.GetRequiredService<IOptionsSnapshot<DomainUrlConfig>>();
+    IOptionsMonitor<DomainUrlConfig> domainUrlConfigOption = app.Services.GetRequiredService<IOptionsMonitor<DomainUrlConfig>>();
 
-    var domainUrlConfig = domainUrlConfigOption.Value;
+    var domainUrlConfig = domainUrlConfigOption.CurrentValue;
 
     var targetDomainUr = domainUrlConfig.Entries.SingleOrDefault(x => x.Domain == ctx.Request.Host.Host);
     if (targetDomainUr == null)
