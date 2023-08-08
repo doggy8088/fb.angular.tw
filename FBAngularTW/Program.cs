@@ -9,7 +9,7 @@ var app = builder.Build();
 
 app.Run(ctx =>
 {
-    IOptionsMonitor<DomainUrlConfig> domainUrlConfigOption = app.Services.GetRequiredService<IOptionsMonitor<DomainUrlConfig>>();
+    IOptionsMonitor<DomainUrlConfig> domainUrlConfigOption = ctx.RequestServices.GetRequiredService<IOptionsMonitor<DomainUrlConfig>>();
 
     var domainUrlConfig = domainUrlConfigOption.CurrentValue;
 
