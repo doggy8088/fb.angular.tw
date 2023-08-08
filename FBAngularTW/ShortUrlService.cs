@@ -1,13 +1,13 @@
 ﻿namespace FBAngularTW
 {
-    public class ShortUrlProvider
+    public class ShortUrlService
     {
         private const string POSITION = "ShortUrl";
         private const string DEFAULT = "default";
 
         private readonly IConfiguration _configuration;
 
-        public ShortUrlProvider(IConfiguration configuration)
+        public ShortUrlService(IConfiguration configuration)
         {
             _configuration = configuration;
         }

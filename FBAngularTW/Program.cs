@@ -1,16 +1,8 @@
 using FBAngularTW;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<ShortUrlService>();
+
 var app = builder.Build();
-
-var shortUrlProvider = new ShortUrlProvider(builder.Configuration);
-
-
-app.Run(ctx =>
-{
-    var shortUrl = shortUrlProvider.GetShortUrl(ctx.Request.Host.Host);
-    ctx.Response.Redirect(shortUrl);
-    return Task.CompletedTask;
-});
-
+app.UseShortUrl();
 app.Run();
