@@ -13,14 +13,14 @@ app.Run(ctx =>
 
     var domainUrlConfig = domainUrlConfigOption.CurrentValue;
 
-    var targetDomainUr = domainUrlConfig.Entries.SingleOrDefault(x => x.Domain == ctx.Request.Host.Host);
-    if (targetDomainUr == null)
+    var targetDomainUrl = domainUrlConfig.Entries.SingleOrDefault(x => x.Domain == ctx.Request.Host.Host);
+    if (targetDomainUrl == null)
     {
         ctx.Response.Redirect("https://www.facebook.com/will.fans");
     }
     else
     {
-        ctx.Response.Redirect($"{targetDomainUr.Url}");
+        ctx.Response.Redirect(targetDomainUrl.Url);
     }
    
     return Task.CompletedTask;
