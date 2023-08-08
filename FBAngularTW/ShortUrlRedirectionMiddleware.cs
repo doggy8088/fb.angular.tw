@@ -2,24 +2,24 @@ using Microsoft.Extensions.Options;
 
 namespace FBAngularTW;
 
-public class CustomRedirectionMiddleware
+public class ShortUrlRedirectionMiddleware
 {
-    private const string FB_WILL_FANS = "https://www.facebook.com/will.fans";
-
     private readonly RequestDelegate            _next;
+    
+    private string _fallbackUrl = null!;
     private readonly Dictionary<string, string> _lookup;
 
-    public CustomRedirectionMiddleware(
+    public ShortUrlRedirectionMiddleware(
         RequestDelegate next,
-        IOptionsMonitor<List<RedirectionOption>> optionMonitor
+        IOptionsMonitor<RedirectionsOption> optionsMonitor
     )
     {
         this._next = next;
 
         this._lookup = new Dictionary<string, string>();
-        this.UpdateLookup(optionMonitor.CurrentValue);
+        this.UpdateRedirections(optionsMonitor.CurrentValue);
 
-        optionMonitor.OnChange(this.UpdateLookup);
+        optionsMonitor.OnChange(this.UpdateRedirections);
     }
 
     public async Task InvokeAsync(HttpContext ctx)
@@ -28,17 +28,19 @@ public class CustomRedirectionMiddleware
         ctx.Response.Redirect(
             this._lookup.TryGetValue(ctx.Request.Host.Host, out var targetUrl)
                 ? targetUrl
-                : FB_WILL_FANS
+                : this._fallbackUrl
         );
 
     }
 
-    private void UpdateLookup(List<RedirectionOption> currentOptions)
+    private void UpdateRedirections(RedirectionsOption option)
     {
+        this._fallbackUrl = option.FallbackUrl;
+        
         this._lookup.Clear();
-        foreach (var option in currentOptions)
+        foreach (var mapping in option.Mappings)
         {
-            this._lookup[option.SourceHost] = option.TargetUrl;
+            this._lookup[mapping.SourceHost] = mapping.TargetUrl;
         }
     }
 }
