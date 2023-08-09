@@ -12,15 +12,13 @@ app.Run(ctx =>
     IOptionsMonitor<DomainUrlConfig> domainUrlConfigOption = ctx.RequestServices.GetRequiredService<IOptionsMonitor<DomainUrlConfig>>();
 
     var domainUrlConfig = domainUrlConfigOption.CurrentValue;
-
-    var targetDomainUrl = domainUrlConfig.Entries.SingleOrDefault(x => x.Domain == ctx.Request.Host.Host);
-    if (targetDomainUrl == null)
+    if (domainUrlConfig.Mapping.TryGetValue(ctx.Request.Host.Host, out string targetDomainUrl))
     {
-        ctx.Response.Redirect("https://www.facebook.com/will.fans");
+        ctx.Response.Redirect(targetDomainUrl);
     }
     else
     {
-        ctx.Response.Redirect(targetDomainUrl.Url);
+        ctx.Response.Redirect("https://www.facebook.com/will.fans");
     }
    
     return Task.CompletedTask;
