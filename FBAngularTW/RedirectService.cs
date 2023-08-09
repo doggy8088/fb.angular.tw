@@ -13,7 +13,7 @@ namespace FBAngularTW
 
         public string GetTargetUrl(string host)
         {
-            if (_setting.CurrentValue.Mapping.TryGetValue("", out string targetUrl))
+            if (_setting.CurrentValue.Mapping.TryGetValue(host, out string targetUrl))
                 return targetUrl;
 
             return _setting.CurrentValue.DefaultUrl;
