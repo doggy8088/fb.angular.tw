@@ -1,17 +1,18 @@
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-public class ServiceProviderClassFixture<T> where T : class {
-    private static readonly IServiceCollection _services 
-        = new ServiceCollection()
-            .AddSingleton<IConfiguration>(
-                _ => new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", true, true)
-                    .Build())
-            .AddOptions();
+public class ServiceProviderClassFixture<T> where T : class
+{
     private readonly IServiceProvider _provider;
-    public ServiceProviderClassFixture() {
-        _provider = _services.BuildServiceProvider();
+    public ServiceProviderClassFixture()
+    {
+        var builder = WebApplication.CreateBuilder();
+
+        builder
+            .Services
+            .ConfigureOptions<ShortUrlConfigureOptions>();
+        var app = builder.Build();
+        _provider = app.Services.CreateScope().ServiceProvider; // IOptionsMonitor is scoped 
     }
 
     public T Service => _provider.GetRequiredService<T>();
