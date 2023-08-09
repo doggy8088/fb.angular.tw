@@ -1,42 +1,26 @@
+using FBAngularTW;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
+services.Configure<DomainUrlConfig>(options => configuration.GetSection("DomainUrlConfigs").Bind(options));
 var app = builder.Build();
 
 app.Run(ctx =>
 {
-    switch (ctx.Request.Host.Host)
+    IOptionsMonitor<DomainUrlConfig> domainUrlConfigOption = ctx.RequestServices.GetRequiredService<IOptionsMonitor<DomainUrlConfig>>();
+
+    var domainUrlConfig = domainUrlConfigOption.CurrentValue;
+    if (domainUrlConfig.Mapping.TryGetValue(ctx.Request.Host.Host, out string targetDomainUrl))
     {
-        case "fb.angular.tw":
-            ctx.Response.Redirect("https://www.facebook.com/groups/augularjs.tw");
-            break;
-
-        case "yt.angular.tw":
-            ctx.Response.Redirect("https://www.youtube.com/c/AngularUserGroupTaiwan/videos");
-            break;
-            
-        case "ts.angular.tw":
-            ctx.Response.Redirect("https://willh.gitbook.io/typescript-tutorial");
-            break;
-
-        case "vscode.angular.tw":
-            ctx.Response.Redirect("https://marketplace.visualstudio.com/items?itemName=doggy8088.angular-extension-pack");
-            break;
-
-        case "cli.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/v4_YsDZbs3g");
-            break;
-
-        case "rx6.angular.tw":
-            ctx.Response.Redirect("https://youtu.be/BA1vSZwzkK8");
-            break;
-
-        case "install.angular.tw":
-            ctx.Response.Redirect("https://gist.github.com/doggy8088/15e434b43992cf25a78700438743774a");
-            break;
-
-        default:
-            ctx.Response.Redirect("https://www.facebook.com/will.fans");
-            break;
+        ctx.Response.Redirect(targetDomainUrl);
     }
+    else
+    {
+        ctx.Response.Redirect("https://www.facebook.com/will.fans");
+    }
+   
     return Task.CompletedTask;
 });
 
