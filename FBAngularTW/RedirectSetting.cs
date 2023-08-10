@@ -2,7 +2,7 @@
 {
     public class RedirectSetting
     {
-        public Dictionary<string, string>? Mapping { get; set; }
+        public Dictionary<string, string>? Mappings { get; set; }
         public string? DefaultUrl { get; set; }
     }
 }

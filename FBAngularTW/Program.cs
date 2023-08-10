@@ -7,9 +7,9 @@ var app = builder.Build();
 
 app.Run(ctx =>
 {
-    ctx.Response.Redirect(
-    ctx.RequestServices.GetService<RedirectService>().GetTargetUrl(ctx)
-    );
+    RedirectService service = ctx.RequestServices.GetService<RedirectService>();
+    if (service != null)
+        ctx.Response.Redirect(service.GetTargetUrl(ctx.Request.Host.Host));
     return Task.CompletedTask;
 });
 

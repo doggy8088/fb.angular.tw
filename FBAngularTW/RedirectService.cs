@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
 namespace FBAngularTW
 {
@@ -12,10 +11,9 @@ namespace FBAngularTW
             _setting = shortUrlOption;
         }
 
-        internal string GetTargetUrl(HttpContext ctx)
+        public string GetTargetUrl(string host)
         {
-            string host = ctx.Request.Host.Host;
-            if (_setting.CurrentValue.Mapping.TryGetValue(host, out string targetUrl))
+            if (_setting.CurrentValue.Mappings.TryGetValue(host, out string targetUrl))
                 return targetUrl;
 
             return _setting.CurrentValue.DefaultUrl;
