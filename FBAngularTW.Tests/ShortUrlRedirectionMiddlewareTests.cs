@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-using Moq;
+using NSubstitute;
 
 namespace FBAngularTW.Tests;
 
@@ -13,11 +13,12 @@ public class ShortUrlRedirectionMiddlewareTests
     private const string KNOWN_HOST            = "known.host.com";
     private const string TARGET_FOR_KNOWN_HOST = "https://target.example.com";
 
-    private ShortUrlRedirectionMiddleware _middleware;
+    private ShortUrlRedirectionMiddleware _middleware = null!;
 
     private DefaultHttpContext _ctx = null!;
 
-    private readonly Mock<IOptionsMonitor<RedirectionsOption>> _mockOptionsMonitor = new Mock<IOptionsMonitor<RedirectionsOption>>();
+    private readonly IOptionsMonitor<RedirectionsOption> _mockOptionsMonitor = 
+        Substitute.For<IOptionsMonitor<RedirectionsOption>>();
 
     [Fact]
     public async Task ShortUrlIsKnown()
@@ -37,7 +38,7 @@ public class ShortUrlRedirectionMiddlewareTests
             },
         });
 
-        this.WhenConfiguredWith(this._mockOptionsMonitor.Object);
+        this.WhenConfiguredWith(this._mockOptionsMonitor);
 
         // Act
         await this._middleware.InvokeAsync(this._ctx);
@@ -64,7 +65,7 @@ public class ShortUrlRedirectionMiddlewareTests
             },
         });
 
-        this.WhenConfiguredWith(this._mockOptionsMonitor.Object);
+        this.WhenConfiguredWith(this._mockOptionsMonitor);
 
         // Act
         await this._middleware.InvokeAsync(this._ctx);
@@ -76,7 +77,7 @@ public class ShortUrlRedirectionMiddlewareTests
     private void WhenConfiguredWith(IOptionsMonitor<RedirectionsOption> optionsMonitor)
     {
         this._middleware = new ShortUrlRedirectionMiddleware(
-            new Mock<RequestDelegate>().Object,
+            Substitute.For<RequestDelegate>(),
             optionsMonitor
         );
     }
@@ -88,9 +89,7 @@ public class ShortUrlRedirectionMiddlewareTests
 
     private void GivenOptions(RedirectionsOption redirectionsOption)
     {
-        this._mockOptionsMonitor
-            .SetupGet(x => x.CurrentValue)
-            .Returns(redirectionsOption);
+        this._mockOptionsMonitor.CurrentValue.Returns(redirectionsOption);
     }
 
     private void GivenHost(string hostName)
