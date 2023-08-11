@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBAngularTW", "FBAngularTW\FBAngularTW.csproj", "{222DAC57-FF41-47E8-A1A6-63DF309CF1A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBAngularTW.Tests", "FBAngularTW.Tests\FBAngularTW.Tests.csproj", "{2DD9DE1F-5F40-4BB1-B423-910343C063B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{222DAC57-FF41-47E8-A1A6-63DF309CF1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{222DAC57-FF41-47E8-A1A6-63DF309CF1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{222DAC57-FF41-47E8-A1A6-63DF309CF1A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DD9DE1F-5F40-4BB1-B423-910343C063B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DD9DE1F-5F40-4BB1-B423-910343C063B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DD9DE1F-5F40-4BB1-B423-910343C063B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DD9DE1F-5F40-4BB1-B423-910343C063B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
