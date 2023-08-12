@@ -8,7 +8,6 @@ var app = builder.Build();
 app.Run(ctx =>
 {
     var host = ctx.Request.Host.Host;
-    host = "angular.tw";
     var redirectUrlOptions = new List<RedirectUrlOption>();
     builder.Configuration.GetSection(RedirectUrlOption.RedirectUrl).Bind(redirectUrlOptions);
     var option = redirectUrlOptions.FirstOrDefault(x => x.host == host);            
