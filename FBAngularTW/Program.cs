@@ -10,7 +10,10 @@ app.Run(ctx =>
     var host = ctx.Request.Host.Host;
     var redirectUrlOptions = new List<RedirectUrlOption>();
     builder.Configuration.GetSection(RedirectUrlOption.RedirectUrl).Bind(redirectUrlOptions);
-    var option = redirectUrlOptions.FirstOrDefault(x => x.host == host);            
+    var option = redirectUrlOptions.FirstOrDefault(x => x.host == host);
+    if (option is null) {
+        option = redirectUrlOptions.FirstOrDefault(x => x.host == RedirectUrlOption.DefaultHost);
+    }
     if (option is not null)
     {
         ctx.Response.Redirect(option.url);
