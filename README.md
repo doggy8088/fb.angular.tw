@@ -30,6 +30,10 @@
 
     轉址到 <https://gist.github.com/doggy8088/15e434b43992cf25a78700438743774a>
 
+- `devtools.angular.tw`
+
+    轉址到 <https://chromewebstore.google.com/detail/angular-devtools/ienfalfjdbdpebioblfackkekamfmbnh>
+
 - 預設轉址 (因為要搭配 DNS 運作，所以應該沒這個可能)
 
     轉址到 <https://www.facebook.com/will.fans>
